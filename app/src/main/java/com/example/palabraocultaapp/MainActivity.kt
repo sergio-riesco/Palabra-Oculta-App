@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,18 +22,23 @@ class MainActivity : AppCompatActivity() {
         textViewPalabraOculta = findViewById(R.id.textViewPalabraOculta)
         buttonComprobar = findViewById(R.id.buttonComprobar)
     }
-    /*
-        private fun initListenerButton() {
-            buttonEnviarNombre.setOnClickListener(){ view ->
-                if (!viewModel.saludar(editTextNombre.text.toString())){
-                    Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
-                } else {
-                    textViewNombre.text = viewModel.nombre
-                }
-            }
 
+    private fun initListenerButton() {
+        buttonComprobar.setOnClickListener(){ view ->
+            if (!viewModel.comprobar(textViewPalabraOculta.text.toString())){
+                Toast.makeText(this, "Vaya! Intenta otra letra! Intentos: "+viewModel.intentos+"/5"
+                    , Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Acierto!", Toast.LENGTH_SHORT).show()
+                textViewPalabraOculta.text = viewModel.palabra
+            }
+            if (viewModel.intentos == 5){
+                textViewPalabraOculta.nuevoJuego()
+                Toast.makeText(this, "Perdiste... Inténtalo otra vez", Toast.LENGTH_SHORT).show()
+            }
         }
-    */
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -43,6 +49,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         iniciarElementos()
-        //initListenerButton()
+        initListenerButton()
     }
 }
