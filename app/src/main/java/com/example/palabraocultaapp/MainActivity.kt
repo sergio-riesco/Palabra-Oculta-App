@@ -25,16 +25,36 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListenerButton() {
         buttonComprobar.setOnClickListener(){ view ->
-            if (!viewModel.comprobar(textViewPalabraOculta.text.toString())){
+            if (!viewModel.comprobar(editTextLetra.text.toString().toCharArray().get(0))){
                 Toast.makeText(this, "Vaya! Intenta otra letra! Intentos: "+viewModel.intentos+"/5"
                     , Toast.LENGTH_SHORT).show()
+
             } else {
                 Toast.makeText(this, "Acierto!", Toast.LENGTH_SHORT).show()
-                textViewPalabraOculta.text = viewModel.palabra
+                var letras = "_ _ _ _ _".toCharArray()
+                var letraADesvelar = 0
+                for (i in 0..viewModel.letrasAcertadas.size - 1){
+                    if (viewModel.letrasAcertadas[i])
+                        letras[letraADesvelar] = viewModel.palabra[i]
+                    letraADesvelar += 2
+                }
+                textViewPalabraOculta.text = String(letras)
             }
             if (viewModel.intentos == 5){
-                textViewPalabraOculta.nuevoJuego()
+                viewModel.nuevoJuego()
                 Toast.makeText(this, "Perdiste... Inténtalo otra vez", Toast.LENGTH_SHORT).show()
+            } else {
+                var ganador = true
+                for(acierto in viewModel.letrasAcertadas) {
+                    if (!acierto) {
+                        ganador = false
+                        break
+                    }
+                }
+                if (ganador) {
+                    viewModel.nuevoJuego()
+                    Toast.makeText(this, "Ganaste! Inténtalo otra vez", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
